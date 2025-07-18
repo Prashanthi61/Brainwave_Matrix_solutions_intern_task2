@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Details</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo">LapMart</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" id="contact-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="product-detail" id="product-detail">
+    <!-- JS will populate this -->
+  </div>
+
+  <div class="contact-box hidden" id="contact-box">
+    <span class="close-contact" id="close-contact">&times;</span>
+    <p><i class="fas fa-envelope"></i> support@lapmart.com</p>
+    <p><i class="fas fa-phone"></i> +91-9876543210</p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const products = [
+        { id: 1, name: "Dell Inspiron 15", brand: "Dell", price: 749, image: "images/laptop1.jpg", desc: "A great Dell laptop for everyday use." },
+        { id: 2, name: "HP Envy x360", brand: "HP", price: 849, image: "images/laptop2.jpg", desc: "Convertible HP laptop with AMD Ryzen." },
+        { id: 3, name: "Lenovo Yoga Slim", brand: "Lenovo", price: 899, image: "images/laptop3.jpg", desc: "Slim Lenovo laptop with performance boost." },
+        { id: 4, name: "Asus VivoBook 14", brand: "Asus", price: 679, image: "images/laptop4.jpg", desc: "Compact Asus laptop with great display." },
+        { id: 5, name: "Apple MacBook Air", brand: "Apple", price: 1099, image: "images/laptop5.jpg", desc: "Lightweight MacBook with M1 chip." },
+        { id: 6, name: "Acer Aspire 7", brand: "Acer", price: 629, image: "images/laptop6.jpg", desc: "Affordable Acer laptop for students." }
+      ];
+
+      function getProductId() {
+        const params = new URLSearchParams(window.location.search);
+        return parseInt(params.get("id"));
+      }
+
+      function showProductDetails() {
+        const id = getProductId();
+        const product = products.find(p => p.id === id);
+        const container = document.getElementById("product-detail");
+
+        if (!product) {
+          container.innerHTML = "<p>Product not found.</p>";
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="product-card detail-card">
+            <img src="${product.image}" alt="${product.name}">
+            <h2>${product.name}</h2>
+            <p><strong>Brand:</strong> ${product.brand}</p>
+            <p><strong>Price:</strong> $${product.price}</p>
+            <p>${product.desc}</p>
+            <button onclick="addToCartFromDetails()">Add to Cart</button>
+          </div>
+        `;
+      }
+
+      function addToCartFromDetails() {
+        const id = getProductId();
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        alert("Item added to cart");
+      }
+function contact(){
+      const contactLink = document.getElementById("contact-link");
+      const closeBtn = document.getElementById("close-contact");
+      const contactBox = document.getElementById("contact-box");
+
+      contactLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        contactBox.classList.remove("hidden");
+      });
+
+      closeBtn.addEventListener("click", () => {
+        contactBox.classList.add("hidden");
+      });
+}
+      contact();
+      showProductDetails();
+    });
+  </script>
+</body>
+</html>
