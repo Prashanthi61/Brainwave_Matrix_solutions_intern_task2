@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laptop Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <style>
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 300px;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 999;
+      padding: 1rem;
+    }
+    .cart-sidebar.open {
+      transform: translateX(0);
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">LapMart</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#" id="cart-count">Cart (0)</a></li>
+        <li><a href="#" id="contact-link">Contact</a></li>
+      </ul>
+    </nav>
+    <button id="mode-toggle">🌓</button>
+  </header>
+  <section class="hero">
+    <h1>Shop the Latest Laptops</h1>
+    <p>Performance meets portability</p>
+  </section>
+<section>
+<!-- Explore Section -->
+<div class="explore-section" bgcolor="red">
+  <h2>Discover the Power of Portability</h2>
+  <p>"Unleash performance, style, and productivity with our top laptop picks."</p>
+  <button onclick="window.location.href='laptop-info.html'">Explore Now</button>
+</div>
+</section>
+
+  <section class="filters">
+    <label for="brand">Filter by Brand:</label>
+    <select id="brand">
+      <option value="all">All</option>
+      <option value="Dell">Dell</option>
+      <option value="HP">HP</option>
+      <option value="Lenovo">Lenovo</option>
+    </select>
+  </section>
+
+  <main class="product-grid" id="product-grid"></main>
+
+  <footer>
+    <p>&copy; 2025 LapMart. All rights reserved.</p>
+  </footer>
+
+  <!-- 🛒 Cart Sidebar -->
+  <div id="cart-sidebar" class="cart-sidebar">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <p id="total-price">Total: $0</p>
+    <button onclick="checkout()">Proceed to Payment</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <!-- 💳 Payment Window -->
+  <div id="payment-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Payment</h2>
+      <form onsubmit="return makePayment()">
+        <input type="text" placeholder="Card Number" required />
+        <input type="text" placeholder="Name on Card" required />
+        <input type="text" placeholder="Expiry Date" required />
+        <input type="number" placeholder="CVV" required />
+        <button type="submit">Pay Now</button>
+        <button type="button" onclick="closePayment()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 📞 Contact Box -->
+  <div class="contact-box hidden" id="contact-box">
+    <span class="close-contact" id="close-contact">&times;</span>
+    <p><i class="fas fa-envelope"></i> support@lapmart.com</p>
+    <p><i class="fas fa-phone"></i> +91-9876543210</p>
+  </div>
+
+  <!-- 🔔 Toast Message -->
+  <div id="toast" class="toast">Item added to cart</div>
+
+  <script src="script.js"></script>
+  <script>
+  function showCart() {
+    const cartSidebar = document.getElementById("cart-sidebar");
+    const cartItemsDiv = document.getElementById("cart-items");
+    cartItemsDiv.innerHTML = "";
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
+    } else {
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p>${item.name} - $${item.price} 
+          <button onclick="removeItem(${index})">Remove</button></p>
+        `;
+        cartItemsDiv.appendChild(div);
+        total += item.price;
+      });
+    }
+
+    document.getElementById("total-price").textContent = `Total: $${total}`;
+    cartSidebar.classList.add("open");
+  }
+
+  function closeCart() {
+    document.getElementById("cart-sidebar").classList.remove("open");
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+  }
+
+  function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartCount();
+    showCart();
+  }
+
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    document.getElementById("cart-count").textContent = `Cart (${cart.length})`;
+  }
+
+  updateCartCount();
+function checkout() {
+  document.getElementById("cart-sidebar").classList.remove("open");
+  document.getElementById("payment-modal").classList.remove("hidden");
+}
+</script>
+</body>
+</html>
