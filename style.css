@@ -1,0 +1,289 @@
+:root {
+  --bg: #f0f2f5;
+  --text: #111;
+  --card: #fff;
+  --accent: #007bff;
+  --accent-hover: #0056b3;
+  --footer: #222;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --card: #1e1e1e;
+  --accent: #0d6efd;
+  --accent-hover: #0a58ca;
+  --footer: #000;
+  --shadow: 0 8px 24px rgba(255, 255, 255, 0.05);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--footer);
+  color: white;
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: var(--accent);
+}
+
+#mode-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.hero {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: white;
+  text-align: center;
+  padding: 4rem 1rem;
+  animation: fadeInDown 1s;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+}
+
+.filters {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.filters select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.product-card {
+  background: var(--card);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: fadeInUp 0.8s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-card h3 {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.product-card p {
+  color: green;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.product-card button {
+  background: var(--accent);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.product-card button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+footer {
+  background: var(--footer);
+  color: #ccc;
+  text-align: center;
+  padding: 1.2rem;
+  margin-top: 2rem;
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.modal-content {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  color: var(--text);
+  animation: fadeInDown 0.5s;
+}
+
+.modal-content form input {
+  width: 90%;
+  margin: 0.5rem auto;
+  padding: 0.6rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background: var(--accent-hover);
+}
+
+.hidden {
+  display: none;
+}
+
+.product-detail {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.detail-card {
+  max-width: 500px;
+  text-align: center;
+}
+
+.detail-card img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.contact-box {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--card);
+  color: var(--text);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  max-width: 300px;
+  z-index: 1000;
+  animation: fadeInUp 0.5s ease;
+}
+
+.contact-box p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.contact-box i {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+.close-contact {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+.hidden {
+display: none;
+}
